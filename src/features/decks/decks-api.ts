@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {Item} from "./decks-reducer.ts";
 
 export const instance = axios.create({
   baseURL: 'https://api.flashcards.andrii.es/',
@@ -44,3 +45,17 @@ export const fetchData = async () => {
   }
 };
 
+
+
+export type addDeckParams ={
+  name:string
+}
+export const addDeck = async (params:addDeckParams) => {
+  try {
+    const response = await instance.post<Item>('/v1/decks', params);
+    return response.data
+  } catch (error:any){
+    console.error('error',error.message);
+    throw error;
+  }
+}

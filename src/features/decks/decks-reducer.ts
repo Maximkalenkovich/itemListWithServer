@@ -1,58 +1,69 @@
 interface Author {
-  id: string;
-  name: string;
+    id: string;
+    name: string;
 }
 
 export interface Item {
-  author:Author
-  id: string;
-  userId: string;
-  name: string;
-  isPrivate: boolean;
-  cover: string;
-  created: string  // This could be Date if you're converting from string
-  updated: string  // This could be Date if you're converting from string
-  cardsCount: number;
+    author: Author
+    id: string;
+    userId: string;
+    name: string;
+    isPrivate: boolean;
+    cover: string;
+    created: string  // This could be Date if you're converting from string
+    updated: string  // This could be Date if you're converting from string
+    cardsCount: number;
 }
 
 interface Pagination {
-  currentPage: number;
-  itemsPerPage: number;
-  totalPages: number;
-  totalItems: number;
+    currentPage: number;
+    itemsPerPage: number;
+    totalPages: number;
+    totalItems: number;
 }
 
 interface ResponseType {
-  items: Item[];
-  pagination: Pagination;
-  maxCardsCount: number;
+    items: Item[];
+    pagination: Pagination;
+    maxCardsCount: number;
 }
 
 
-
 const initialState = {
-  decks:[] as Item[], // todo: add type
-  searchParams: {
-    name: '',
-  },
+    decks: [] as Item[], // todo: add type
+    searchParams: {
+        name: '',
+    },
 }
 
 
 type DecksState = typeof initialState
 
 export const decksReducer = (state: DecksState = initialState, action: DecksActions): DecksState => {
-  switch (action.type) {
-    case "SET-STATE":
-    return {...state,decks:action.decks}
-    default:
-      return state
-  }
+    switch (action.type) {
+        case "SET-STATE":
+            return {...state, decks: action.decks};
+        case "ADD/NEW-DECK":
+            return {
+                ...state, decks: [action.deck, ...state.decks]
+            }
+        default:
+            return state
+    }
 }
 
 
-export const setStateAC = (decks:Item[]) =>{
-  return {
-    type:'SET-STATE',decks
-  } as const
+export const setStateAC = (decks: Item[]) => {
+    return {
+        type: 'SET-STATE', decks
+    } as const
 }
-type DecksActions = ReturnType<typeof setStateAC>
+export const addDeckAC = (deck: Item) => {
+    return {
+        type: 'ADD/NEW-DECK',
+        deck
+    } as const
+}
+
+
+type DecksActions = ReturnType<typeof setStateAC> | ReturnType<typeof addDeckAC>
