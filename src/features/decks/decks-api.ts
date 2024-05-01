@@ -20,8 +20,8 @@ type ResponseType = {
     name: string;
     isPrivate: boolean;
     cover: string;
-    created: string // This could be Date if you're converting from string
-    updated: string   // This could be Date if you're converting from string
+    created: string
+    updated: string
     cardsCount: number;
   }>;
   pagination: {
